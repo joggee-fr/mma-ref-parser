@@ -25,3 +25,4 @@ $ npm run parse "https://mmajunkie.usatoday.com/2018/04/derrick-lewis-vs-francis
 # Supported websites
 * [MMA Fighting](https://www.mmafighting.com/)
 * [MMA Junkie](https://mmajunkie.usatoday.com/)
+* [Sherdog](https://www.sherdog.com)
