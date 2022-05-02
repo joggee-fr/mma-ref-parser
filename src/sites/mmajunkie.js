@@ -1,6 +1,5 @@
 import Site from '../site.js';
 import Info from '../info.js';
-import moment from 'moment';
 
 class MmaJunkie extends Site {
     _parse(soup) {
@@ -31,7 +30,7 @@ class MmaJunkie extends Site {
         if (!date)
             throw new Error('Unable to find date content');
 
-        info.date = moment(date);
+        info.date = new Date(date);
 
         return info;
     }

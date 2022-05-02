@@ -1,6 +1,5 @@
 import Site from '../site.js';
 import Info from '../info.js';
-import moment from 'moment';
 import he from 'he';
 
 class Sherdog extends Site {
@@ -30,7 +29,7 @@ class Sherdog extends Site {
         if (!item)
             throw new Error('Unable to find date item');
 
-        info.date = moment(Date.parse(subItem.text));
+        info.date = new Date(subItem.text);
 
         return info;
     }

@@ -1,5 +1,3 @@
-import moment from 'moment';
-import 'moment/locale/fr.js';
 import sites from './sites/sites.js';
 
 class Parser {
@@ -33,9 +31,9 @@ class Parser {
             }
         }
 
-        moment.locale('fr');
-        let date = info.date.format("D MMMM YYYY");
-        let now = moment().format("D MMMM YYYY");
+        let options = { year: 'numeric', month: 'long', day: 'numeric' };
+        let date = info.date.toLocaleDateString('fr', options);
+        let now = new Date().toLocaleDateString('fr', options);
 
         ref += `|url=${url} `;
         ref += `|titre=${info.title} `;
