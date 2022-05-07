@@ -20,7 +20,7 @@ class MmaFighting extends Site {
         if (!item)
             throw new Error('Unable to find author item');
 
-        let author = item.attrs.content
+        let author = item.attrs.content;
         if (!author)
             throw new Error('Unable to find author content');
 
@@ -28,7 +28,7 @@ class MmaFighting extends Site {
         if (!item)
             throw new Error('Unable to find date item');
 
-        let date = item.attrs.content
+        let date = item.attrs.content;
         if (!date)
             throw new Error('Unable to find author content');
 

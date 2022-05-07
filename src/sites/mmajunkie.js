@@ -26,7 +26,7 @@ class MmaJunkie extends Site {
         if (!item)
             throw new Error('Unable to find date item');
 
-        let date = item.attrs.content
+        let date = item.attrs.content;
         if (!date)
             throw new Error('Unable to find date content');
 
