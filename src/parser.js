@@ -20,7 +20,7 @@ class Parser {
         let ref = '{{Lien web ';
         ref += `|langue=${info.lang} `;
 
-        if (info.authors.length > 1) {
+        if (info.authors.length >= 1) {
             ref += `|auteur=${info.authors[0]} `;
             info.authors.shift();
 
