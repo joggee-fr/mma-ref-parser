@@ -8,29 +8,15 @@ class MmaJunkie extends Site {
         info.lang = 'en';
         info.site = 'MMA Junkie';
 
-        var item = soup.find('title');
-        if (!item)
-            throw new Error('Unable to find title item');
+        this._parseMetaTags(soup, info, info.getFields([ 'authors' ]));
 
-        info.title = item.text;
-
-        item = soup.find('span', { itemprop: 'author' });
+        let item = soup.find('span', { itemprop: 'author' });
         if (!item)
             throw new Error('Unable to find author item');
 
         if (item.text != 'MMA Junkie Staff') {
             info.authors.push(item.text);
         }
-
-        item = soup.find('span', { itemprop: 'datePublished' });
-        if (!item)
-            throw new Error('Unable to find date item');
-
-        let date = item.attrs.content;
-        if (!date)
-            throw new Error('Unable to find date content');
-
-        info.date = new Date(date);
 
         return info;
     }

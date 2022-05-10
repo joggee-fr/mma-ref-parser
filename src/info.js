@@ -7,4 +7,10 @@ class Info {
         this.date = null;
         this.site = '';
     }
+
+    getFields(excludes = []) {
+        return Object.keys(this).filter(field => {
+            return !excludes.includes(field);
+        });
+    }
 }
