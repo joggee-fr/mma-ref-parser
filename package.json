@@ -21,6 +21,10 @@
   },
   "scripts": {
     "update": "node tools/update-sites.js",
-    "parse": "node ./src/cli.js"
+    "parse": "node ./src/cli.js",
+    "tests": "node ./tests/tests.js"
+  },
+  "devDependencies": {
+    "csv-parse": "^5.0.4"
   }
 }
