@@ -1,7 +1,7 @@
 import sites from './sites/sites.js';
 
 class Parser {
-    async _getSite(url) {
+    static #getSite(url) {
         for (let site of sites) {
             if (site.checkUrl(url))
                 return site;
@@ -11,7 +11,7 @@ class Parser {
     }
 
     async parse(url) {
-        let site = await this._getSite(url);
+        let site = this.constructor.#getSite(url);
         if (!site)
             throw new Error(`Can't find parser for URL: ${url}`);
 
