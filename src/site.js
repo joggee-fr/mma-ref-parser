@@ -22,7 +22,7 @@ class Site {
         return this._parse(soup);
     }
 
-    _getMetaTag(soup, name) {
+    static #getMetaTag(soup, name) {
         let item = soup.find('meta', { name: name })
             || soup.find('meta', { property: name });
 
@@ -32,11 +32,11 @@ class Site {
         return null;
     }
 
-    _parseMetaAuthor(value, info) {
+    static #parseMetaAuthor(value, info) {
         info.authors.push(value);
     }
 
-    _parseMetaDate(value, info) {
+    static #parseMetaDate(value, info) {
         // Reset hour part and keep only date
         let regex = new RegExp(/^(\d{4}-\d{2}-\d{2})T.*$/);
         const match = value.match(regex);
@@ -61,11 +61,11 @@ class Site {
                     'article:published_time', 
                     'sailthru.date', 'parsely-pub-date'
                 ],
-                parser: this._parseMetaDate,
+                parser: Site.#parseMetaDate,
             },
             authors: {
                 names: [ 'author', 'parsely-author' ],
-                parser: this._parseMetaAuthor,
+                parser: Site.#parseMetaAuthor,
             },
         };
 
@@ -73,7 +73,7 @@ class Site {
             var tagValue = null;
 
             for (const name of value.names) {
-                if (tagValue = this._getMetaTag(soup, name))
+                if (tagValue = Site.#getMetaTag(soup, name))
                     break;
             }
 
