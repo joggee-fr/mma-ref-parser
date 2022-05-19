@@ -23,7 +23,7 @@ class Sherdog extends Site {
         if (!item)
             throw new Error('Unable to find author item');
 
-        info.authors.push(item.text);
+        info.authors.push(subItem.text);
 
         subItem = item.find('span');
         if (!item)
