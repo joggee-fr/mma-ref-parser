@@ -8,9 +8,22 @@ class Info {
         this.site = '';
     }
 
-    getFields(excludes = []) {
-        return Object.keys(this).filter(field => {
-            return !excludes.includes(field);
-        });
+    isComplete(field) {
+        if (field) {
+            if (typeof this[field] === 'string')
+                return (this[field].length > 0);
+
+            if (Array.isArray(this[field]))
+                return (this[field].length > 0);
+
+            return !!this[field];
+        }
+
+        for (const field of Object.keys(this)) {
+            if (!this.isComplete(field))
+                return false;
+        }
+
+        return true;
     }
 }

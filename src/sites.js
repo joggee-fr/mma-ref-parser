@@ -9,8 +9,9 @@ class Sites {
 
     constructor() {
         this.#sites = new Map();
-        this.#sites.set('cagesidepress.com', this.getDefaultSite);
-        this.#sites.set('mmafighting.com', this.getDefaultSite);
+        this.#sites.set('cagesidepress.com', null);
+        this.#sites.set('mmafighting.com', null);
+        this.#sites.set('mmanews.com', null);
         this.#sites.set('mmajunkie.usatoday.com', () => new MmaJunkie());
         this.#sites.set('mmaweekly.com', () => new MmaWeekly());
         this.#sites.set('sherdog.com', () => new Sherdog());
@@ -28,7 +29,9 @@ class Sites {
             baseUrl = baseUrl.slice(4);
 
         const getSite = this.#sites.get(baseUrl);
-        if (getSite)
+        if (getSite === null)
+            return this.getDefaultSite();
+        else if (getSite)
             return getSite();
 
         return null;
