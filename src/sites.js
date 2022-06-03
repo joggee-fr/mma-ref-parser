@@ -9,6 +9,7 @@ class Sites {
 
     constructor() {
         this.#sites = new Map();
+        this.#sites.set('bloodyelbow.com', null);
         this.#sites.set('cagesidepress.com', null);
         this.#sites.set('mmafighting.com', null);
         this.#sites.set('mmanews.com', null);
