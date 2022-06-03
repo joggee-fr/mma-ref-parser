@@ -28,6 +28,7 @@ $ npm run parse "https://mmajunkie.usatoday.com/2018/04/derrick-lewis-vs-francis
 * [Bloody Elbow](https://www.bloodyelbow.com)
 * [Cageside Press](https://cagesidepress.com)
 * [MMA Fighting](https://www.mmafighting.com)
+* [MMA Mania](https://www.mmamania.com)
 * [MMA News](https://www.mmanews.com)
 * [MMA Junkie](https://mmajunkie.usatoday.com)
 * [MMA Weekly](https://www.mmaweekly.com)

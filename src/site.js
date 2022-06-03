@@ -81,7 +81,9 @@ class Site {
             if (!data)
                 continue;
 
-            const article = Site.#deepSearch(data, '@type', 'Article', x => true);
+            const article = Site.#deepSearch(data, '@type', 'Article', x => true)
+                || Site.#deepSearch(data, '@type', 'NewsArticle', x => true);
+
             if (!article)
                 return;
 
