@@ -21,8 +21,10 @@ try {
 } catch (e) {
 	console.error('Processing failed');
 
-	if (e.message)
+	if (e.message) {
 		console.error(e.message);
+		console.log(e);
+	}
 
 	process.exit(1);
 }

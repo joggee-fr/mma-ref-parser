@@ -1,17 +1,9 @@
-import sites from './sites/sites.js';
+import Sites from './sites.js';
 
+export default
 class Parser {
-    static #getSite(url) {
-        for (let site of sites) {
-            if (site.checkUrl(url))
-                return site;
-        }
-
-        return null;
-    }
-
-    async parse(url) {
-        let site = this.constructor.#getSite(url);
+    static async parse(url) {
+        let site = Sites.getSite(url);
         if (!site)
             throw new Error(`Can't find parser for URL: ${url}`);
 
@@ -44,5 +36,3 @@ class Parser {
         return ref;
     }
 }
-
-export default new Parser();

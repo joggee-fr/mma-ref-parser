@@ -1,6 +1,6 @@
 {
   "name": "@joggee-fr/mma-ref-parser",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Parse mixed martial arts online articles to build Wikipedia.fr references",
   "main": "./src/cli.js",
   "type": "module",

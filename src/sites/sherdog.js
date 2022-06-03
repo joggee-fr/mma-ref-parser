@@ -1,21 +1,10 @@
 import Site from '../site.js';
-import Info from '../info.js';
-import he from 'he';
 
+
+export default
 class Sherdog extends Site {
-    _parse(soup) {
-        let info = new Info();
-
-        info.lang = 'en';
-        info.site = 'Sherdog';
-
-        var item = soup.find('h1');
-        if (!item)
-            throw new Error('Unable to find title item');
-
-        info.title = he.unescape(item.text);
-
-        item = soup.find('div', { class: 'article-info' });
+    _parse(soup, info) {
+        let item = soup.find('div', { class: 'article-info' });
         if (!item)
             throw new Error('Unable to find article info item');
 
@@ -23,6 +12,7 @@ class Sherdog extends Site {
         if (!item)
             throw new Error('Unable to find author item');
 
+        info.authors = [];
         info.authors.push(subItem.text);
 
         subItem = item.find('span');
@@ -31,8 +21,6 @@ class Sherdog extends Site {
 
         info.date = new Date(subItem.text);
 
-        return info;
+        super._parse(soup, info);
     }
 }
-
-export default new Sherdog('sherdog.com');

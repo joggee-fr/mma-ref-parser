@@ -3,20 +3,11 @@ import { fileURLToPath } from 'url';
 import fs from 'fs';
 import { parse } from 'csv-parse';
 
-import sites from '../src/sites/sites.js';
+import Sites from '../src/sites.js';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 const csvFile = `${dirname}/tests.csv`;
-
-function getSite(url) {
-    for (const site of sites) {
-        if (site.checkUrl(url))
-            return site;
-    }
-
-    return null;
-}
 
 function checkArray(retrievedValue, expectedValue) {
     if (expectedValue.length === retrievedValue.length) {
@@ -58,7 +49,7 @@ async function processData(readable) {
 
         console.log(`Testing URL: ${data.url}`);
 
-        const site = getSite(data.url);
+        const site = Sites.getSite(data.url);
         if (!site)
             throw new Error(`Can't find parser for URL: ${url}`);
 
