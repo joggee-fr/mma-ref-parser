@@ -17,7 +17,8 @@
   "dependencies": {
     "axios": "^0.27.1",
     "he": "^1.2.0",
-    "jssoup": "^0.0.15"
+    "jssoup": "^0.0.15",
+    "yargs": "^17.5.1"
   },
   "scripts": {
     "update": "node tools/update-sites.js",

@@ -22,6 +22,8 @@ Or `npm` tool can also be used.
 $ npm run parse "https://mmajunkie.usatoday.com/2018/04/derrick-lewis-vs-francis-ngannou-booked-ufc-226-las-vegas"
 ```
 
+`-f` or `--force` optional argument can be passed to force parsing using default processing if the website is not supported yet. 
+
 # Supported websites
 * [Cageside Press](https://cagesidepress.com)
 * [MMA Fighting](https://www.mmafighting.com)

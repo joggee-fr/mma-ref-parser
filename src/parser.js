@@ -2,12 +2,16 @@ import Sites from './sites.js';
 
 export default
 class Parser {
-    static async parse(url) {
+    static async parse(url, force) {
         let site = Sites.getSite(url);
-        if (!site)
-            throw new Error(`Can't find parser for URL: ${url}`);
+        if (!site) {
+            if (!force)
+                throw new Error(`Can't find parser for URL: ${url}`);
+            else
+                site = Sites.getDefaultSite();
+        }
 
-        let info = await site.retrieveInfo(url);
+        const info = await site.retrieveInfo(url);
 
         let ref = '{{Lien web ';
         ref += `|langue=${info.lang} `;
@@ -23,9 +27,9 @@ class Parser {
             }
         }
 
-        let options = { year: 'numeric', month: 'long', day: 'numeric' };
-        let date = info.date.toLocaleDateString('fr', options);
-        let now = new Date().toLocaleDateString('fr', options);
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const date = info.date.toLocaleDateString('fr', options);
+        const now = new Date().toLocaleDateString('fr', options);
 
         ref += `|url=${url} `;
         ref += `|titre=${info.title} `;
