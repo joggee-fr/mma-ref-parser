@@ -17,6 +17,7 @@ class Sites {
         this.#sites.set('mmajunkie.usatoday.com', () => new MmaJunkie());
         this.#sites.set('mmaweekly.com', () => new SiteFixer('MMA Weekly'));
         this.#sites.set('sherdog.com', () => new Sherdog());
+        this.#sites.set('sports.yahoo.com', () => new SiteFixer('Yahoo! Sports'));
     }
 
     getDefaultSite() {
