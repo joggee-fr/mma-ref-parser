@@ -13,7 +13,7 @@ class Parser {
 
         const info = await site.retrieveInfo(url);
 
-        let ref = '{{Lien web ';
+        let ref = '<ref>{{Lien web ';
         ref += `|langue=${info.lang} `;
 
         if (info.authors.length >= 1) {
@@ -36,6 +36,8 @@ class Parser {
         ref += `|site=${info.site} `;
         ref += `|date=${date} `;
         ref += `|consulté le=${now}}}`;
+
+	ref += '.</ref>';
 
         return ref;
     }
