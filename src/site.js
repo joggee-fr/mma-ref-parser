@@ -17,6 +17,7 @@ class Site {
 
         // Just in case, unescape HTML
         info.title = he.unescape(info.title);
+        info.site = he.unescape(info.site);
 
         return info;
     }
@@ -24,7 +25,9 @@ class Site {
     static #normalizeLang(lang) {
         switch (lang) {
             case 'en_US':
+            case 'en_us':
             case 'en-US':
+            case 'en-us':
                 return 'en';
         }
 
