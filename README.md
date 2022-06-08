@@ -25,6 +25,7 @@ $ npm run parse "https://mmajunkie.usatoday.com/2018/04/derrick-lewis-vs-francis
 `-f` or `--force` optional argument can be passed to force parsing using default processing if the website is not supported yet.
 
 # Supported websites
+* [Bleacher Report](https://bleacherreport.com)
 * [Bloody Elbow](https://www.bloodyelbow.com)
 * [Cageside Press](https://cagesidepress.com)
 * [MMA Fighting](https://www.mmafighting.com)

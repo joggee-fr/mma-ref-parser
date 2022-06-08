@@ -28,6 +28,8 @@ class Site {
             case 'en_us':
             case 'en-US':
             case 'en-us':
+            case 'English':
+            case 'english':
                 return 'en';
         }
 
