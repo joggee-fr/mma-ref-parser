@@ -1,8 +1,11 @@
 import axios from 'axios';
 import he from 'he';
 import JSSoup from 'jssoup';
+import log from 'npmlog';
 
 import Info from './info.js';
+
+const logPrefix = 'site';
 
 export default
 class Site {
@@ -92,25 +95,36 @@ class Site {
             if (!article)
                 return;
 
-            if (!info.isComplete('lang') && article.hasOwnProperty('inLanguage'))
+            if (!info.isComplete('lang') && article.hasOwnProperty('inLanguage')) {
+                log.verbose(logPrefix, `Retrieved language from JSON-LD: ${article.inLanguage}`);
                 info.lang = Site.#normalizeLang(article.inLanguage);
+            }
 
-            if (!info.isComplete('title') && article.hasOwnProperty('headline'))
+            if (!info.isComplete('title') && article.hasOwnProperty('headline')) {
+                log.verbose(logPrefix, `Retrieved title from JSON-LD: ${article.headline}`);
                 info.title = article.headline;
-            
-            if (!info.isComplete('date') && article.hasOwnProperty('datePublished'))
+            }
+
+            if (!info.isComplete('date') && article.hasOwnProperty('datePublished')) {
+                log.verbose(logPrefix, `Retrieved date from JSON-LD: ${article.datePublished}`);
                 info.date = Site.#normalizeDate(article.datePublished);
+            }
 
             if (!info.isComplete('authors') && article.hasOwnProperty('author')) {
                 if (article.author.hasOwnProperty('name')) {
+                    log.verbose(logPrefix, `Retrieved author from JSON-LD: ${article.author.name}`);
                     info.authors.push(article.author.name);
                 } else if (article.author.hasOwnProperty('@id')) {
                     const id = article.author['@id'];
-                    const person = Site.#deepSearch(data, '@type', 'Person', 
+                    log.verbose(logPrefix, `Retrieved author idfrom JSON-LD: ${id}`);
+
+                    const person = Site.#deepSearch(data, '@type', 'Person',
                         x => (x.hasOwnProperty('@id') && (x['@id'] === id)));
 
-                    if (person && person.hasOwnProperty('name'))
+                    if (person && person.hasOwnProperty('name')) {
+                        log.verbose(logPrefix, `Retrieved author from JSON-LD: ${person.name}`);
                         info.authors.push(person.name);
+                    }
                 }
             }
         }
@@ -126,7 +140,7 @@ class Site {
         return null;
     }
 
-    _parseMetaTags(soup, info) {
+    #parseMetaTags(soup, info) {
         // Parse meta tags added for Open Graph, Twitter
         // or analytics tools like Parse.ly or Sailthru for example
         const tags = {
@@ -141,16 +155,16 @@ class Site {
                 },
             },
             title: {
-                names: [ 
+                names: [
                     'og:title',
-                    'twitter:title', 'twitter:text:title', 
+                    'twitter:title', 'twitter:text:title',
                     'sailthru.title', 'parsely-title',
                 ],
                 parser: null,
             },
             date: {
-                names: [ 
-                    'article:published_time', 
+                names: [
+                    'article:published_time',
                     'sailthru.date', 'parsely-pub-date',
                 ],
                 parser: (value, info) => {
@@ -173,15 +187,16 @@ class Site {
             let tagValue = null;
 
             for (const name of value.names) {
-                if (tagValue = Site.#getMetaTag(soup, name))
-                    break;
-            }
+                if (tagValue = Site.#getMetaTag(soup, name)) {
+                    log.verbose(logPrefix, `Retrieved ${key} from "${name}" meta tag: ${tagValue}`);
 
-            if (tagValue) {
-                if (value.parser) {
-                    (value.parser.bind(this))(tagValue, info);
-                } else {
-                    info[key] = tagValue;
+                    if (value.parser) {
+                        (value.parser.bind(this))(tagValue, info);
+                    } else {
+                        info[key] = tagValue;
+                    }
+
+                    break;
                 }
             }
         }
@@ -194,6 +209,6 @@ class Site {
             Site.#parseHtmlLang(soup, info);
 
         if (!info.isComplete())
-            this._parseMetaTags(soup, info);
+            this.#parseMetaTags(soup, info);
     }
 }

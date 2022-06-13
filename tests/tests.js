@@ -1,10 +1,14 @@
+import { parse } from 'csv-parse';
+import fs from 'fs';
+import log from 'npmlog';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import fs from 'fs';
-import { parse } from 'csv-parse';
+import yargs from 'yargs';
+import { hideBin } from 'yargs/helpers';
 
 import Sites from '../src/sites.js';
 
+const logPrefix = 'tests';
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 const csvFile = `${dirname}/tests.csv`;
@@ -47,7 +51,7 @@ async function processData(readable) {
         // Create date
         data.date = new Date(data.date);
 
-        console.log(`Testing URL: ${data.url}`);
+        log.info(logPrefix, `Testing URL: ${data.url}`);
 
         const site = Sites.getSite(data.url);
         if (!site)
@@ -59,18 +63,26 @@ async function processData(readable) {
         for (const key of Object.keys(data)) {
             if (key !== 'url')
                 if (!checkValue(info[key], data[key]))
-                    console.error(`Unexpected value (${info[key]}) instead of (${data[key]}) for field ${key}`);
+                    log.error(logPrefix, `Unexpected value (${info[key]}) instead of (${data[key]}) for field ${key}`);
         }
     }
 }
 
-let stream = fs.createReadStream(csvFile)
+const argv = yargs(hideBin(process.argv))
+    .alias('l', 'log')
+    .nargs('l', 1)
+    .argv;
+
+if (argv.l)
+    log.level = argv.l;
+
+const stream = fs.createReadStream(csvFile)
     .pipe(parse({ columns: true }));
 
 try {
     processData(stream);
 } catch (e) {
-    console.error(e.message);
-    console.log(e);
+    log.error(logPrefix, e.message);
+    log.verbose(logPrefix, e);
     process.exit(1);
 }

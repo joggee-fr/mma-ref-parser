@@ -1,36 +1,45 @@
 #! /usr/bin/env node
 
+import log from 'npmlog';
+import process from 'process';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import process from 'process';
+
 import Parser from './parser.js';
+
+const logPrefix = 'cli';
 
 const argv = yargs(hideBin(process.argv))
     .alias('f', 'force')
     .nargs('f', 0)
+    .alias('l', 'log')
+    .nargs('l', 1)
     .argv;
 
 const args = argv._;
 
 if (args.length == 0) {
-	console.log("Missing URL parameter");
+	log.error(logPrefix, 'Missing URL parameter');
 	process.exit(1);
 }
 
 const url = args[0];
 
-console.log(`Processing URL: ${url}`);
+if (argv.l)
+	log.level = argv.l;
+
+log.info(logPrefix, `Processing URL: ${url}`);
 
 try {
 	let ref = await Parser.parse(args[0], argv.f);
-	console.log('Processing succeed');
+	log.info(logPrefix, 'Processing succeed');
 	console.log(ref);
 } catch (e) {
-	console.error('Processing failed');
+	log.error(logPrefix, 'Processing failed');
 
 	if (e.message) {
-		console.error(e.message);
-		console.log(e);
+		log.error(logPrefix, e.message);
+		log.verbose(logPrefix, e);
 	}
 
 	process.exit(1);
