@@ -19,6 +19,7 @@ class Sites {
         this.#sites.set('mmaweekly.com', () => new SiteFixer('MMA Weekly'));
         this.#sites.set('sherdog.com', () => new Sherdog());
         this.#sites.set('sportskeeda.com', () => new SiteFixer('Sportskeeda'));
+        this.#sites.set('lasueur.com', null);
         this.#sites.set('sports.yahoo.com', () => new SiteFixer('Yahoo! Sports'));
     }
 
