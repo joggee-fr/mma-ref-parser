@@ -27,14 +27,18 @@ class Site {
 
     static #normalizeLang(lang) {
         switch (lang) {
-            case 'en_US':
-            case 'en_us':
-            case 'en-US':
-            case 'en-us':
             case 'English':
             case 'english':
                 return 'en';
         }
+
+        let n = lang.indexOf('-');
+        if (n > 0)
+            return lang.slice(0, n);
+
+        n = lang.indexOf('_');
+        if (n > 0)
+            return lang.slice(0, n);
 
         return lang;
     }
