@@ -28,13 +28,17 @@ class Parser {
         }
 
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        const date = info.date.toLocaleDateString('fr', options);
+
+        const date = info.date ? info.date.toLocaleDateString('fr', options) : null;
         const now = new Date().toLocaleDateString('fr', options);
 
         ref += `|url=${url} `;
         ref += `|titre=${info.title} `;
         ref += `|site=${info.site} `;
-        ref += `|date=${date} `;
+
+        if (date)
+            ref += `|date=${date} `;
+
         ref += `|consulté le=${now}}}`;
 
 	ref += '.</ref>';
