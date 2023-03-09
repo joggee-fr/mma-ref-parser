@@ -66,7 +66,7 @@ class Site {
             }
         } else if (typeof searchable === 'object') {
             if (searchable.hasOwnProperty(key) && (searchable[key] === value)) {
-                if (checker(searchable))
+                if (!checker || checker(searchable))
                     return searchable;
             }
 
@@ -93,8 +93,11 @@ class Site {
             if (!data)
                 continue;
 
-            const article = Site.#deepSearch(data, '@type', 'Article', x => true)
-                || Site.#deepSearch(data, '@type', 'NewsArticle', x => true);
+            const article = Site.#deepSearch(data, '@type', 'Article')
+                || Site.#deepSearch(data, '@type', 'NewsArticle')
+                || Site.#deepSearch(data, '@type', 'WebPage', x => {
+                    return !(x.hasOwnProperty('name') && x.name === 'Home');
+                });
 
             if (!article)
                 return;
@@ -102,6 +105,16 @@ class Site {
             if (!info.isComplete('lang') && article.hasOwnProperty('inLanguage')) {
                 log.verbose(logPrefix, `Retrieved language from JSON-LD: ${article.inLanguage}`);
                 info.lang = Site.#normalizeLang(article.inLanguage);
+            }
+
+            if (!info.isComplete('title')) {
+                if (article.hasOwnProperty('headline')) {
+                    log.verbose(logPrefix, `Retrieved title from JSON-LD: ${article.headline}`);
+                    info.title = article.headline;
+                } else if (article.hasOwnProperty('name')) {
+                    log.verbose(logPrefix, `Retrieved title from JSON-LD: ${article.name}`);
+                    info.title = article.name;
+                }
             }
 
             if (!info.isComplete('title') && article.hasOwnProperty('headline')) {
@@ -120,7 +133,7 @@ class Site {
                     info.authors.push(article.author.name);
                 } else if (article.author.hasOwnProperty('@id')) {
                     const id = article.author['@id'];
-                    log.verbose(logPrefix, `Retrieved author idfrom JSON-LD: ${id}`);
+                    log.verbose(logPrefix, `Retrieved author id from JSON-LD: ${id}`);
 
                     const person = Site.#deepSearch(data, '@type', 'Person',
                         x => (x.hasOwnProperty('@id') && (x['@id'] === id)));
