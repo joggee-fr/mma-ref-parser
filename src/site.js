@@ -88,6 +88,8 @@ class Site {
         if (!items)
             return;
 
+        log.verbose(logPrefix, 'Parsing JSON-LD');
+
         for (const item of items) {
             const data = JSON.parse(item.text);
             if (!data)
@@ -100,7 +102,7 @@ class Site {
                 });
 
             if (!article)
-                return;
+                continue;
 
             if (!info.isComplete('lang') && article.hasOwnProperty('inLanguage')) {
                 log.verbose(logPrefix, `Retrieved language from JSON-LD: ${article.inLanguage}`);
@@ -128,19 +130,24 @@ class Site {
             }
 
             if (!info.isComplete('authors') && article.hasOwnProperty('author')) {
-                if (article.author.hasOwnProperty('name')) {
-                    log.verbose(logPrefix, `Retrieved author from JSON-LD: ${article.author.name}`);
-                    info.authors.push(article.author.name);
-                } else if (article.author.hasOwnProperty('@id')) {
-                    const id = article.author['@id'];
-                    log.verbose(logPrefix, `Retrieved author id from JSON-LD: ${id}`);
+                // author field may be an object or an array
+                const authors = Array.isArray(article.author) ? article.author : [ article.author ];
 
-                    const person = Site.#deepSearch(data, '@type', 'Person',
-                        x => (x.hasOwnProperty('@id') && (x['@id'] === id)));
+                for (const author of authors) {
+                    if (author.hasOwnProperty('name')) {
+                        log.verbose(logPrefix, `Retrieved author from JSON-LD: ${author.name}`);
+                        info.authors.push(author.name);
+                    } else if (author.hasOwnProperty('@id')) {
+                        const id = author['@id'];
+                        log.verbose(logPrefix, `Retrieved author id from JSON-LD: ${id}`);
 
-                    if (person && person.hasOwnProperty('name')) {
-                        log.verbose(logPrefix, `Retrieved author from JSON-LD: ${person.name}`);
-                        info.authors.push(person.name);
+                        const person = Site.#deepSearch(data, '@type', 'Person',
+                            x => (x.hasOwnProperty('@id') && (x['@id'] === id)));
+
+                        if (person && person.hasOwnProperty('name')) {
+                            log.verbose(logPrefix, `Retrieved author from JSON-LD: ${person.name}`);
+                            info.authors.push(person.name);
+                        }
                     }
                 }
             }

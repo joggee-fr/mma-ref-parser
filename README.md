@@ -33,6 +33,7 @@ $ npm run parse "https://mmajunkie.usatoday.com/2018/04/derrick-lewis-vs-francis
 * [MMA News](https://www.mmanews.com)
 * [MMA Junkie](https://mmajunkie.usatoday.com)
 * [MMA Weekly](https://www.mmaweekly.com)
+* [RMC Sport](https://rmcsport.bfmtv.com)
 * [Sherdog](https://www.sherdog.com)
 * [Sportskeeda](https://www.sportskeeda.com)
 * [La Sueur](https://lasueur.com)

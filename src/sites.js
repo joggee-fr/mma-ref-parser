@@ -18,6 +18,7 @@ class Sites {
         this.#sites.set('mmanews.com', null);
         this.#sites.set('mmajunkie.usatoday.com', () => new MmaJunkie());
         this.#sites.set('mmaweekly.com', () => new MmaWeekly());
+        this.#sites.set('rmcsport.bfmtv.com', () => new SiteFixer('RMC Sport'));
         this.#sites.set('sherdog.com', () => new Sherdog());
         this.#sites.set('sportskeeda.com', () => new SiteFixer('Sportskeeda'));
         this.#sites.set('lasueur.com', null);
